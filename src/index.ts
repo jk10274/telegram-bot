@@ -1,6 +1,7 @@
 import bodyParser from "body-parser";
 import express from "express";
 import { Telegraf } from "telegraf";
+import DSB from 'dsbapi';
 
 /*
   TELEGRAM_BOT_TOKEN is an environment variable
@@ -9,9 +10,20 @@ import { Telegraf } from "telegraf";
 if (!process.env.TELEGRAM_BOT_TOKEN) throw new Error("Please add a bot token");
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
 
+const dsb = new DSB('299301', '20dsbADS21');
+
+async function getDsbData() {
+	const data = await dsb.fetch();
+	const timetables = DSB.findMethodInData('timetable', data);
+	const tiles = DSB.findMethodInData('tiles', data);
+}
+
 bot.start(ctx => ctx.reply("Welcome"));
 bot.hears("hello", ctx => {
   ctx.reply("Hello to you too!");
+});
+bot.hears("dsb", ctx => {
+  ctx.reply(getDsbData());
 });
 
 bot.launch();
