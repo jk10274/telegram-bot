@@ -1,7 +1,8 @@
 import bodyParser from "body-parser";
 import express from "express";
 import { Telegraf } from "telegraf";
-import DSB from 'dsbapi';
+
+const DSB = require('dsbapi');
 
 /*
   TELEGRAM_BOT_TOKEN is an environment variable
@@ -16,14 +17,13 @@ async function getDsbData() {
 	const data = await dsb.fetch();
 	const timetables = DSB.findMethodInData('timetable', data);
 	const tiles = DSB.findMethodInData('tiles', data);
+  console.log(timetables);
 }
 
 bot.start(ctx => ctx.reply("Welcome"));
 bot.hears("hello", ctx => {
+  getDsbData();
   ctx.reply("Hello to you too!");
-});
-bot.hears("dsb", ctx => {
-  ctx.reply(getDsbData());
 });
 
 bot.launch();
