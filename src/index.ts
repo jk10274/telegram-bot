@@ -13,13 +13,17 @@ const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
 
 const dsb = new DSB('299301', '20dsbADS21');
 
-async function getDsbData() {
-	const data = await dsb.fetch();
-	const timetables = DSB.findMethodInData('timetable', data);
-	const tiles = DSB.findMethodInData('tiles', data);
-  console.log(timetables);
-  return { timetables, tiles };
-}
+dsb.fetch()
+	.then(data => {
+		const timetables = DSB.findMethodInData('timetable', data);
+		const tiles = DSB.findMethodInData('tiles', data);
+
+		// Work with it
+	})
+	.catch(e => {
+		// An error occurred :(
+		console.log(e);
+	});
 
 bot.start(ctx => ctx.reply("Welcome"));
 bot.hears("hello", ctx => {
