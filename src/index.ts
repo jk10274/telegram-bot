@@ -18,12 +18,12 @@ async function getDsbData() {
 	const timetables = DSB.findMethodInData('timetable', data);
 	const tiles = DSB.findMethodInData('tiles', data);
   console.log(timetables);
+  return { timetables, tiles };
 }
 
 bot.start(ctx => ctx.reply("Welcome"));
 bot.hears("hello", ctx => {
-  getDsbData();
-  ctx.reply("Hello to you too!");
+  ctx.reply("Hey there!");
 });
 
 bot.launch();
